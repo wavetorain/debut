@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're Invited | 18th Birthday Debut</title>
+  <style>
+    :root {
+      --primary: #d4af37; /* Elegant gold */
+      --bg: #faf6f0; /* Soft cream background */
+      --text: #2c2c2c;
+    }
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', Georgia, serif;
+      background-color: var(--bg);
+      color: var(--text);
+      text-align: center;
+    }
+    header {
+      padding: 60px 20px;
+      background-color: #ffffff;
+      border-bottom: 3px solid var(--primary);
+    }
+    h1 { 
+      font-size: 2.5rem; 
+      margin-bottom: 10px; 
+      letter-spacing: 2px;
+    }
+    .guest-name { 
+      color: var(--primary); 
+      font-size: 1.8rem; 
+      margin: 20px 0; 
+      font-style: italic;
+    }
+    .section { 
+      padding: 40px 20px; 
+      max-width: 600px; 
+      margin: 0 auto; 
+    }
+    .card { 
+      background: #ffffff; 
+      padding: 25px; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+      margin-bottom: 30px;
+    }
+    input[type="radio"] {
+      accent-color: var(--primary);
+    }
+    textarea {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+    button {
+      background: var(--primary); 
+      color: white; 
+      border: none; 
+      padding: 12px 24px;
+      border-radius: 6px; 
+      font-size: 1.1rem; 
+      cursor: pointer; 
+      margin-top: 15px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #b5952f;
+    }
+  </style>
+</head>
+<body>
 
+  <header>
+    <p style="letter-spacing: 3px; font-size: 0.9rem;">CELEBRATING THE 18TH BIRTHDAY OF</p>
+    <h1>Your Girlfriend's Name</h1> <div id="personalized-greeting" class="guest-name">Dearest Guest,</div>
+  </header>
+
+  <main class="section">
+    <div class="card">
+      <h2>Event Details</h2>
+      <p><strong>Date:</strong> November 24, 2026</p>
+      <p><strong>Time:</strong> 5:00 PM</p>
+      <p><strong>Venue:</strong> Grand Ballroom, Quezon City</p>
+    </div>
+
+    <div class="card">
+      <h2>RSVP</h2>
+      <form id="rsvpForm">
+        <p>Will you be celebrating with us?</p>
+        <label><input type="radio" name="attending" value="true" required> Joyfully Accepts</label>
+        <label style="margin-left: 15px;"><input type="radio" name="attending" value="false"> Regretfully Declines</label>
+        
+        <br><br>
+        <textarea id="notes" placeholder="Any special messages or dietary restrictions?" rows="3"></textarea>
+        <br>
+        <button type="submit">Submit RSVP</button>
+      </form>
+      <div id="statusMessage" style="margin-top: 15px; font-weight: bold; color: var(--primary);"></div>
+    </div>
+  </main>
+
+  <script>
+    // This script grabs the personalized link (e.g., ?guest=john) and updates the name!
+    const urlParams = new URLSearchParams(window.location.search);
+    const guestSlug = urlParams.get('guest');
+
+    // We will connect this to the database in the next step!
+    if (guestSlug) {
+      document.getElementById('personalized-greeting').innerText = `Dearest ${guestSlug},`;
+    }
+  </script>
+</body>
+</html>
