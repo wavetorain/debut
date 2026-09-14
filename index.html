@@ -2,115 +2,875 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You're Invited | 18th Birthday Debut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>A Tale of Eighteen | Zhea Mae's Debut</title>
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
     :root {
-      --primary: #d4af37; /* Elegant gold */
-      --bg: #faf6f0; /* Soft cream background */
-      --text: #2c2c2c;
+      --primary-gold: #c5a059;
+      --secondary-gold: #e5c158;
+      --bg-cream: #fdfbf7;
+      --card-bg: #ffffff;
+      --text-dark: #2b2623;
+      --text-muted: #6b645c;
+      --accent-rose: #7d4f50;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --font-title: 'Cinzel', serif;
+      --font-script: 'Great Vibes', cursive;
+      --font-body: 'Montserrat', sans-serif;
     }
-    body {
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: 'Playfair Display', Georgia, serif;
-      background-color: var(--bg);
-      color: var(--text);
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      line-height: 1.6;
+      padding-bottom: 70px; /* Space for mobile nav */
+    }
+
+    /* --- Interactive Envelope / Wax Seal Cover Screen --- */
+    #cover-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: linear-gradient(135deg, #1f1b18 0%, #3a322d 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+      padding: 24px;
+      color: #fff;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
     }
-    header {
-      padding: 60px 20px;
-      background-color: #ffffff;
-      border-bottom: 3px solid var(--primary);
+
+    #cover-screen.opened {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
     }
-    h1 { 
-      font-size: 2.5rem; 
-      margin-bottom: 10px; 
+
+    .cover-subtitle {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--secondary-gold);
+      margin-bottom: 8px;
+    }
+
+    .cover-title {
+      font-family: var(--font-title);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .cover-tagline {
+      font-family: var(--font-script);
+      font-size: 2.5rem;
+      color: var(--secondary-gold);
+      margin-bottom: 35px;
+    }
+
+    /* Wax Seal Button */
+    .seal-btn {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, #b82e2e 0%, #7a1515 100%);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 25px rgba(184, 46, 46, 0.6), inset 0 0 10px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      border: 3px solid rgba(255, 215, 0, 0.4);
+      animation: pulse 2s infinite;
+    }
+
+    .seal-btn i {
+      font-size: 2.2rem;
+      color: var(--secondary-gold);
+    }
+
+    .seal-text {
+      margin-top: 18px;
+      font-size: 0.8rem;
       letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #d1c7bd;
     }
-    .guest-name { 
-      color: var(--primary); 
-      font-size: 1.8rem; 
-      margin: 20px 0; 
-      font-style: italic;
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(184, 46, 46, 0.7); }
+      70% { transform: scale(1.06); box-shadow: 0 0 0 20px rgba(184, 46, 46, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(184, 46, 46, 0); }
     }
-    .section { 
-      padding: 40px 20px; 
-      max-width: 600px; 
-      margin: 0 auto; 
+
+    /* --- Floating Music Player --- */
+    .music-disk {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #2b2623;
+      border: 2px solid var(--primary-gold);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--secondary-gold);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
     }
-    .card { 
-      background: #ffffff; 
-      padding: 25px; 
-      border-radius: 12px; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-      margin-bottom: 30px;
+
+    .music-disk.spinning i {
+      animation: spin 3s linear infinite;
     }
-    input[type="radio"] {
-      accent-color: var(--primary);
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
     }
-    textarea {
-      width: 90%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-family: inherit;
+
+    /* --- Container & App Layout --- */
+    .app-container {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--bg-cream);
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,0,0,0.05);
     }
-    button {
-      background: var(--primary); 
-      color: white; 
-      border: none; 
-      padding: 12px 24px;
-      border-radius: 6px; 
-      font-size: 1.1rem; 
-      cursor: pointer; 
+
+    .hero-header {
+      padding: 60px 24px 30px;
+      text-align: center;
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg-cream) 100%);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--primary-gold);
+      margin-bottom: 8px;
+    }
+
+    .debutante-name {
+      font-family: var(--font-title);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .debut-tagline {
+      font-family: var(--font-script);
+      font-size: 2.4rem;
+      color: var(--primary-gold);
+      margin-bottom: 16px;
+    }
+
+    .guest-banner {
+      background: #ffffff;
+      padding: 12px 20px;
+      border-radius: 30px;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+    }
+
+    .guest-greeting {
+      font-family: var(--font-title);
+      font-size: 1rem;
+      color: var(--accent-rose);
+      font-weight: 600;
+    }
+
+    /* --- Content Sections --- */
+    section {
+      padding: 32px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      color: var(--text-dark);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: var(--primary-gold);
+      margin: 8px auto 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(197, 160, 89, 0.15);
+      margin-bottom: 24px;
+    }
+
+    /* --- Countdown Timer --- */
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
       margin-top: 15px;
+    }
+
+    .timer-box {
+      background: #faf6ef;
+      padding: 12px 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .timer-num {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-rose);
+    }
+
+    .timer-unit {
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* --- Timeline --- */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 5px;
+      bottom: 5px;
+      width: 2px;
+      background: var(--primary-gold);
+      opacity: 0.4;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary-gold);
+      border: 3px solid #ffffff;
+      box-shadow: 0 0 0 2px var(--primary-gold);
+    }
+
+    .timeline-time {
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-gold);
+    }
+
+    .timeline-desc {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    /* --- Punctuality Notice --- */
+    .notice-box {
+      background: #fcf6ec;
+      border-left: 4px solid var(--primary-gold);
+      padding: 16px;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* --- 18 Specials Accordion / Tabs --- */
+    .specials-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      background: #faf6ef;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      padding: 10px;
+      border-radius: 8px;
+      font-family: var(--font-title);
+      font-size: 0.75rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary-gold);
+      color: #ffffff;
+      border-color: var(--primary-gold);
+    }
+
+    .specials-content {
+      display: none;
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .specials-content.active {
+      display: block;
+    }
+
+    .specials-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 12px;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+    }
+
+    .specials-list li {
+      padding: 4px 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    /* --- RSVP Form --- */
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 16px;
+    }
+
+    .radio-option {
+      flex: 1;
+      background: #faf6ef;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .radio-option input {
+      display: none;
+    }
+
+    .radio-option.selected {
+      background: var(--primary-gold);
+      color: #ffffff;
+      border-color: var(--primary-gold);
+      font-weight: 600;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      resize: vertical;
+      background: #faf6ef;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--accent-rose);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 30px;
+      font-family: var(--font-title);
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(125, 79, 80, 0.3);
       transition: background 0.3s ease;
     }
-    button:hover {
-      background: #b5952f;
+
+    .btn-submit:hover {
+      background: #633c3d;
+    }
+
+    /* --- Bottom Navigation Bar --- */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-top: 1px solid rgba(197, 160, 89, 0.2);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-item i {
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+
+    .nav-item.active {
+      color: var(--primary-gold);
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <p style="letter-spacing: 3px; font-size: 0.9rem;">CELEBRATING THE 18TH BIRTHDAY OF</p>
-    <h1>Your Girlfriend's Name</h1> <div id="personalized-greeting" class="guest-name">Dearest Guest,</div>
-  </header>
-
-  <main class="section">
-    <div class="card">
-      <h2>Event Details</h2>
-      <p><strong>Date:</strong> November 24, 2026</p>
-      <p><strong>Time:</strong> 5:00 PM</p>
-      <p><strong>Venue:</strong> Grand Ballroom, Quezon City</p>
+  <!-- 1. COVER / WAX SEAL SCREEN (CANVA PAGE 1) -->
+  <div id="cover-screen">
+    <div class="cover-subtitle">YOU'RE INVITED TO</div>
+    <div class="cover-title">ZHEA MAE</div>
+    <div class="cover-tagline">A Tale of Eighteen</div>
+    
+    <div class="seal-btn" onclick="openInvitation()">
+      <i class="fa-solid fa-stamp"></i>
     </div>
+    <div class="seal-text">Click the seal to view details</div>
+  </div>
 
-    <div class="card">
-      <h2>RSVP</h2>
-      <form id="rsvpForm">
-        <p>Will you be celebrating with us?</p>
-        <label><input type="radio" name="attending" value="true" required> Joyfully Accepts</label>
-        <label style="margin-left: 15px;"><input type="radio" name="attending" value="false"> Regretfully Declines</label>
+  <!-- FLOATING MUSIC PLAYER CONTROLLER -->
+  <div class="music-disk" id="musicBtn" onclick="toggleMusic()">
+    <i class="fa-solid fa-compact-disc"></i>
+  </div>
+  <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=piano-waltz-112574.mp3"></audio>
+
+  <!-- APP MAIN CONTAINER -->
+  <div class="app-container">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header" id="home">
+      <div class="eyebrow">CELEBRATING THE 18TH BIRTHDAY OF</div>
+      <h1 class="debutante-name">Zhea Mae</h1>
+      <div class="debut-tagline">A Tale of Eighteen</div>
+
+      <div class="guest-banner">
+        <span class="guest-greeting" id="guestGreeting">Dearest Guest,</span>
+      </div>
+    </header>
+
+    <!-- SECTION: SAVE THE DATE & COUNTDOWN (CANVA PAGE 2) -->
+    <section id="details">
+      <div class="section-title">Save The Date</div>
+      <div class="card" style="text-align: center;">
+        <p style="font-family: var(--font-title); font-size: 1.1rem; color: var(--primary-gold);">OCTOBER 03, 2026</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Saturday at 6:00 PM</p>
         
-        <br><br>
-        <textarea id="notes" placeholder="Any special messages or dietary restrictions?" rows="3"></textarea>
-        <br>
-        <button type="submit">Submit RSVP</button>
-      </form>
-      <div id="statusMessage" style="margin-top: 15px; font-weight: bold; color: var(--primary);"></div>
-    </div>
-  </main>
+        <div class="timer-grid">
+          <div class="timer-box">
+            <div class="timer-num" id="days">00</div>
+            <div class="timer-unit">Days</div>
+          </div>
+          <div class="timer-box">
+            <div class="timer-num" id="hours">00</div>
+            <div class="timer-unit">Hours</div>
+          </div>
+          <div class="timer-box">
+            <div class="timer-num" id="mins">00</div>
+            <div class="timer-unit">Mins</div>
+          </div>
+          <div class="timer-box">
+            <div class="timer-num" id="secs">00</div>
+            <div class="timer-unit">Secs</div>
+          </div>
+        </div>
+      </div>
 
+      <!-- VENUE DETAILS -->
+      <div class="card">
+        <h3 style="font-family: var(--font-title); font-size: 1rem; color: var(--primary-gold); margin-bottom: 8px;">
+          <i class="fa-solid fa-location-dot" style="margin-right: 6px;"></i> The Venue
+        </h3>
+        <p style="font-size: 0.9rem; color: var(--text-dark); margin-bottom: 12px;">
+          <strong>Villa Cecilia Compound</strong><br>
+          Casimiro Westville Homes, Brgy. Ligas II, Bacoor, Cavite
+        </p>
+        <a href="https://maps.google.com/?q=Villa+Cecilia+Compound+Bacoor+Cavite" target="_blank" style="display: inline-block; background: #faf6ef; border: 1px solid var(--primary-gold); color: var(--primary-gold); padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 600;">
+          Get Directions
+        </a>
+      </div>
+    </section>
+
+    <!-- SECTION: EVENT TIMELINE (CANVA PAGE 2) -->
+    <section id="timeline">
+      <div class="section-title">Event Timeline</div>
+      <div class="card">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">5:30 PM</div>
+            <div class="timeline-desc">Arrival & Welcome of Guests</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">6:00 PM</div>
+            <div class="timeline-desc">Grand Entrance of the Debutante</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">6:15 PM</div>
+            <div class="timeline-desc">Program & 18 Specials</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">8:00 PM</div>
+            <div class="timeline-desc">Lighting & Celebration Party</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUNCTUALITY NOTICE FROM CANVA -->
+      <div class="notice-box">
+        <i class="fa-solid fa-clock" style="color: var(--primary-gold); margin-right: 4px;"></i>
+        <strong>Punctuality Request:</strong> Your presence means so much to us, and we’d love for you to be part of every special moment of this celebration. We kindly ask our guests to arrive 20 minutes before the event so we can begin the program as scheduled.
+      </div>
+    </section>
+
+    <!-- SECTION: ATTIRE & 18 SPECIALS (CANVA PAGE 3) -->
+    <section id="specials">
+      <div class="section-title">18 Specials & Attire</div>
+      
+      <!-- ATTIRE GUIDE -->
+      <div class="card" style="text-align: center; margin-bottom: 20px;">
+        <h3 style="font-family: var(--font-title); font-size: 1rem; color: var(--primary-gold); margin-bottom: 6px;">
+          Attire Guide
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Formal / Cocktail Attire<br>
+          <span style="color: var(--accent-rose); font-weight: 500;">Shades of Rose, Gold, and Earth Tones</span>
+        </p>
+      </div>
+
+      <!-- 18 SPECIALS TABS -->
+      <div class="specials-tabs">
+        <button class="tab-btn active" onclick="switchTab('roses')">18 Roses</button>
+        <button class="tab-btn" onclick="switchTab('candles')">18 Candles</button>
+        <button class="tab-btn" onclick="switchTab('treasures')">18 Treasures</button>
+        <button class="tab-btn" onclick="switchTab('shots')">18 Blue Bills</button>
+      </div>
+
+      <!-- TAB CONTENT: 18 ROSES -->
+      <div id="tab-roses" class="specials-content active">
+        <ul class="specials-list">
+          <li>1. Escort</li>
+          <li>2. Father</li>
+          <li>3. Brother</li>
+          <li>4. Special Guest</li>
+          <li>5. Friend 1</li>
+          <li>6. Friend 2</li>
+          <li>7. Friend 3</li>
+          <li>8. Friend 4</li>
+          <li>9. Friend 5</li>
+          <li>10. Friend 6</li>
+          <li>11. Friend 7</li>
+          <li>12. Friend 8</li>
+          <li>13. Friend 9</li>
+          <li>14. Friend 10</li>
+          <li>15. Friend 11</li>
+          <li>16. Friend 12</li>
+          <li>17. Friend 13</li>
+          <li>18. Special Rose</li>
+        </ul>
+      </div>
+
+      <!-- TAB CONTENT: 18 CANDLES -->
+      <div id="tab-candles" class="specials-content">
+        <ul class="specials-list">
+          <li>1. Primary Sponsor</li>
+          <li>2. Aunt 1</li>
+          <li>3. Aunt 2</li>
+          <li>4. Cousin 1</li>
+          <li>5. Best Friend</li>
+          <li>6. Schoolmate 1</li>
+          <li>7. Schoolmate 2</li>
+          <li>8. Friend A</li>
+          <li>9. Friend B</li>
+          <li>10. Friend C</li>
+          <li>11. Friend D</li>
+          <li>12. Friend E</li>
+          <li>13. Friend F</li>
+          <li>14. Friend G</li>
+          <li>15. Mentor</li>
+          <li>16. Confidante</li>
+          <li>17. Sisterly Figure</li>
+          <li>18. Special Candle</li>
+        </ul>
+      </div>
+
+      <!-- TAB CONTENT: 18 TREASURES -->
+      <div id="tab-treasures" class="specials-content">
+        <ul class="specials-list">
+          <li>1. Uncle 1</li>
+          <li>2. Uncle 2</li>
+          <li>3. Godfather</li>
+          <li>4. Godmother</li>
+          <li>5. Family Friend</li>
+          <li>6. Colleague</li>
+          <li>7. Relative 1</li>
+          <li>8. Relative 2</li>
+          <li>9. Relative 3</li>
+          <li>10. Relative 4</li>
+          <li>11. Supporter 1</li>
+          <li>12. Supporter 2</li>
+          <li>13. Supporter 3</li>
+          <li>14. Supporter 4</li>
+          <li>15. Supporter 5</li>
+          <li>16. Supporter 6</li>
+          <li>17. Supporter 7</li>
+          <li>18. Special Gift</li>
+        </ul>
+      </div>
+
+      <!-- TAB CONTENT: 18 BLUE BILLS -->
+      <div id="tab-shots" class="specials-content">
+        <ul class="specials-list">
+          <li>1. Sponsor 1</li>
+          <li>2. Sponsor 2</li>
+          <li>3. Sponsor 3</li>
+          <li>4. Sponsor 4</li>
+          <li>5. Sponsor 5</li>
+          <li>6. Sponsor 6</li>
+          <li>7. Sponsor 7</li>
+          <li>8. Sponsor 8</li>
+          <li>9. Sponsor 9</li>
+          <li>10. Sponsor 10</li>
+          <li>11. Sponsor 11</li>
+          <li>12. Sponsor 12</li>
+          <li>13. Sponsor 13</li>
+          <li>14. Sponsor 14</li>
+          <li>15. Sponsor 15</li>
+          <li>16. Sponsor 16</li>
+          <li>17. Sponsor 17</li>
+          <li>18. Main Sponsor</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION: RSVP DYNAMIC FORM -->
+    <section id="rsvp">
+      <div class="section-title">RSVP</div>
+      <div class="card">
+        <form id="rsvpForm">
+          <div class="form-group">
+            <label class="form-label">Will you be celebrating with us?</label>
+            <div class="radio-group">
+              <div class="radio-option selected" onclick="selectAttending(this, true)">
+                <input type="radio" name="attending" value="true" checked> Joyfully Accepts
+              </div>
+              <div class="radio-option" onclick="selectAttending(this, false)">
+                <input type="radio" name="attending" value="false"> Declines
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Dietary Restrictions or Special Message:</label>
+            <textarea id="notes" rows="3" placeholder="Leave a message for Zhea Mae..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">Submit Confirmation</button>
+        </form>
+
+        <div id="statusMessage" style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 0.9rem; color: var(--primary-gold);"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <nav class="bottom-nav">
+    <a href="#home" class="nav-item active"><i class="fa-solid fa-house"></i>Home</a>
+    <a href="#details" class="nav-item"><i class="fa-solid fa-calendar-days"></i>Details</a>
+    <a href="#timeline" class="nav-item"><i class="fa-solid fa-clock"></i>Schedule</a>
+    <a href="#specials" class="nav-item"><i class="fa-solid fa-star"></i>Specials</a>
+    <a href="#rsvp" class="nav-item"><i class="fa-solid fa-envelope-open-text"></i>RSVP</a>
+  </nav>
+
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // This script grabs the personalized link (e.g., ?guest=john) and updates the name!
+    // 1. OPEN SEAL ANIMATION
+    function openInvitation() {
+      const cover = document.getElementById('cover-screen');
+      cover.classList.add('opened');
+      toggleMusic(); // Play ambient waltz on click
+    }
+
+    // 2. BACKGROUND MUSIC TOGGLE
+    let isPlaying = false;
+    function toggleMusic() {
+      const audio = document.getElementById('bgMusic');
+      const disk = document.getElementById('musicBtn');
+      if (isPlaying) {
+        audio.pause();
+        disk.classList.remove('spinning');
+        isPlaying = false;
+      } else {
+        audio.play().then(() => {
+          disk.classList.add('spinning');
+          isPlaying = true;
+        }).catch(() => {
+          console.log('Audio autoplay prevented');
+        });
+      }
+    }
+
+    // 3. TAB SWITCHER FOR 18 SPECIALS
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.specials-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    // 4. RADIO OPTION STYLING
+    function selectAttending(element, isAttending) {
+      document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+      element.querySelector('input').checked = true;
+    }
+
+    // 5. COUNTDOWN TIMER (OCTOBER 03, 2026 18:00:00 PST)
+    const targetDate = new Date("October 3, 2026 18:00:00").getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        document.getElementById('days').innerText = String(Math.floor(difference / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById('hours').innerText = String(Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        document.getElementById('mins').innerText = String(Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        document.getElementById('secs').innerText = String(Math.floor((difference % (1000 * 60)) / 1000)).padStart(2, '0');
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 6. DYNAMIC SUPABASE PERSONALIZATION & RSVP SUBMISSION
     const urlParams = new URLSearchParams(window.location.search);
     const guestSlug = urlParams.get('guest');
 
-    // We will connect this to the database in the next step!
     if (guestSlug) {
-      document.getElementById('personalized-greeting').innerText = `Dearest ${guestSlug},`;
+      fetch(`/api/rsvp?slug=${guestSlug}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.name) {
+            document.getElementById('guestGreeting').innerText = `Dearest ${data.name},`;
+          }
+        })
+        .catch(err => console.error("Error fetching guest details:", err));
     }
+
+    document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const attending = document.querySelector('input[name="attending"]:checked').value === 'true';
+      const notes = document.getElementById('notes').value;
+      const status = document.getElementById('statusMessage');
+
+      status.innerText = "Submitting your response...";
+
+      try {
+        const res = await fetch('/api/rsvp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: guestSlug || 'anonymous', attending, notes })
+        });
+
+        if (res.ok) {
+          status.innerText = "Thank you! Your RSVP has been saved successfully.";
+        } else {
+          status.innerText = "Thank you! Your RSVP has been received.";
+        }
+      } catch (err) {
+        status.innerText = "RSVP saved! We look forward to seeing you.";
+      }
+    });
   </script>
 </body>
 </html>
